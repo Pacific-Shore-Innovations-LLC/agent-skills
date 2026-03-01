@@ -21,7 +21,8 @@ All skills depend on two variables being present in the agent's context at invoc
 | Skill | File | Purpose |
 |---|---|---|
 | `issue-ticket` | `.claude/skills/issue-ticket/SKILL.md` | Raw idea → structured GitHub issue |
-| `prioritize` | `.claude/skills/prioritize/SKILL.md` | ROI-ranked backlog |
+| `prioritize-issues` | `.claude/skills/prioritize-issues/SKILL.md` | ROI-ranked Todo backlog |
+| `prioritize-open-prs` | `.claude/skills/prioritize-open-prs/SKILL.md` | ROI-ranked open PR review queue |
 | `implement-issue` | `.claude/skills/implement-issue/SKILL.md` | Issue → branch → code → PR |
 | `review-pr` | `.claude/skills/review-pr/SKILL.md` | PR review against standards + DoD |
 | `plan-issue` | `.claude/skills/plan-issue/SKILL.md` | Full pipeline orchestrator |
