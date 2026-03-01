@@ -49,6 +49,30 @@ Add this repo alongside your project repo in a `.code-workspace` file to make al
 3. Set `disable-model-invocation: true` in frontmatter
 4. PR to this repo
 
+## Contributing — Git Workflow
+
+When making any changes to this repo (new skill, renamed skill, doc updates), always follow this branching pattern — **never commit directly to `main`**:
+
+```bash
+# Start from a current main
+git checkout main && git pull origin main
+
+# Create a feature branch named after the issue
+git checkout -b issue-{number}-{brief-description}
+
+# Make changes, then commit
+git add -A
+git commit -m "feat|fix|docs: short description\n\nCloses #{number}"
+
+# Push and open a PR
+git push -u origin issue-{number}-{brief-description}
+gh pr create --base main --title "..." --body-file /tmp/pr.md
+```
+
+Branch naming: `issue-{number}-{brief-description}` (e.g. `issue-5-prioritize-open-prs-and-rename`)
+
+This applies even when the agent itself is executing implementation work against this repo as the target.
+
 ## What Not to Add Here
 
 - Project-specific business logic (e.g. utilityiou rate calculation rules)
