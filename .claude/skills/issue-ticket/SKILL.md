@@ -10,19 +10,29 @@ argument-hint: [optional brief idea summary]
 
 Create or edit well-structured GitHub issues with title, description, Definition of Done, and labels. Works against any target repo via `{TARGET_OWNER}/{TARGET_REPO}` context.
 
-## Initial Question
+## Step 0 — Resolve Target Repo
 
-**Step 0 — Determine mode.**
+Follow the standard three-step resolution:
+1. If `repo=owner/repo` or `repo=shortname` was passed as an argument, use that.
+2. If multiple repos are detectable in context (open files, workspace folders), ask: "Which repo — e.g. `utilityiou` or `agent-skills`?"
+3. Otherwise, silently use `{TARGET_OWNER}/{TARGET_REPO}` from context.
+
+Set `RESOLVED_OWNER` and `RESOLVED_REPO` for all subsequent steps.
+
+---
+
+## Step 1 — Determine Mode
+
 Ask: "Are you creating a **new** issue or **editing** an existing one?"
 
 ---
 
 ## Workflow: Creating a New Issue
 
-**Step 1 — Listen first.**
+**Step 2 — Listen first.**
 Read everything the user shares before responding. Do not suggest code, solutions, or structure yet. Acknowledge you've heard the idea.
 
-**Step 2 — Ask clarifying questions, one at a time.**
+**Step 3 — Ask clarifying questions, one at a time.**
 Gather what you need to write a clear issue:
 - What problem does this solve? Who is affected?
 - What is the expected user experience / workflow?
@@ -32,7 +42,7 @@ Gather what you need to write a clear issue:
 
 Wait for an answer before asking the next question. Stop when you have enough context.
 
-**Step 3 — Propose the issue structure.**
+**Step 4 — Propose the issue structure.**
 Present the following for user approval, following the **Standard Issue Format** (see reference section below):
 
 - **Title**: Clear and concise (a single GitHub issue title)
@@ -45,39 +55,45 @@ Present the following for user approval, following the **Standard Issue Format**
   - *Definition of Done* — specific, testable checklist items
 - **Labels** — fetch available labels from the target repo:
   ```bash
-  gh label list --repo {TARGET_OWNER}/{TARGET_REPO}
+  gh label list --repo {RESOLVED_OWNER}/{RESOLVED_REPO}
   ```
 
-**Step 4 — Create the issue (optional).**
-Once approved, ask if the user wants to create it now. If yes:
+**Step 5 — Create the issue (optional).**
+Once approved, ask if the user wants to create it now. If yes, capture the URL directly from the create command and add to the project board if one exists:
 
 ```bash
-gh issue create \
-  --repo {TARGET_OWNER}/{TARGET_REPO} \
+# Create issue and capture its URL
+ISSUE_URL=$(gh issue create \
+  --repo {RESOLVED_OWNER}/{RESOLVED_REPO} \
   --title "Issue title" \
-  --body "Description here" \
-  --label "label1,label2"
+  --body-file /tmp/issue-body.md \
+  --label "label1,label2" \
+  --json url --jq .url)
+
+echo "Created: $ISSUE_URL"
+
+# Discover project number and add to board if a project exists
+PROJECT_NUMBER=$(gh project list --owner {RESOLVED_OWNER} --format json \
+  --jq '.projects[0].number // empty' 2>/dev/null)
+
+if [ -n "$PROJECT_NUMBER" ]; then
+  gh project item-add "$PROJECT_NUMBER" --owner {RESOLVED_OWNER} --url "$ISSUE_URL"
+  echo "Added to project board #$PROJECT_NUMBER"
+fi
 ```
 
-If the target repo has a GitHub Project board, add the issue to it:
-```bash
-ISSUE_URL=$(gh issue view {number} --repo {TARGET_OWNER}/{TARGET_REPO} --json url --jq .url)
-gh project item-add {PROJECT_NUMBER} --owner {TARGET_OWNER} --url "$ISSUE_URL"
-```
+> **Note:** Write the issue body to `/tmp/issue-body.md` via a file creation step before running this block, to avoid shell quoting problems with multi-line bodies.
 
 ---
 
 ## Workflow: Editing an Existing Issue
 
-**Step 1 — Identify the issue.**
-Ask for the issue number.
+**Step 2 — Identify the issue.**
+Ask for the issue number. (Repo is already resolved from Step 0.)
 
-If `TARGET_REPO` is not already in context, ask:
-"Which repository? (Press **Enter** for `{TARGET_OWNER}/{TARGET_REPO}`, or type `owner/repo`)"
-
-**Step 2 — Fetch and display current issue.**
+**Step 3 — Fetch and display current issue.**
 ```bash
-gh issue view {number} --repo {TARGET_OWNER}/{TARGET_REPO} --json title,body,labels
+gh issue view {number} --repo {RESOLVED_OWNER}/{RESOLVED_REPO} --json title,body,labels
 ```
 
 Display:
@@ -85,12 +101,12 @@ Display:
 - Current description
 - Current labels
 
-**Step 3 — Understand the change.**
+**Step 4 — Understand the change.**
 Ask: "What would you like to change about this issue?"
 
 Listen to their revision request. Ask clarifying questions one at a time as needed.
 
-**Step 4 — Propose before/after comparison.**
+**Step 5 — Propose before/after comparison.**
 
 **BEFORE:**
 ```
@@ -106,11 +122,11 @@ Description: [new description]
 Labels: [new labels]
 ```
 
-**Step 5 — Update the issue (optional).**
+**Step 6 — Update the issue (optional).**
 Once approved:
 
 ```bash
-gh issue edit {number} --repo {TARGET_OWNER}/{TARGET_REPO} \
+gh issue edit {number} --repo {RESOLVED_OWNER}/{RESOLVED_REPO} \
   --title "New title" \
   --body "New description" \
   --add-label "new-label" \
