@@ -2,6 +2,12 @@
 
 This is the **agent-skills** repo: a generalized, project-agnostic home for org-wide AI agent skill definitions.
 
+## ⚠️ CONSTITUTIONAL AUTHORITY
+
+**Before authoring or modifying any skill**, consult [`.speckit/constitution-core.md`](.speckit/constitution-core.md). It is the supreme authority for all skill structure rules, output format conventions, runtime variable usage, communication style, cross-tool compatibility, git workflow, and guardrails patterns.
+
+When any rule here contradicts the constitution, the constitution wins.
+
 ## Purpose
 
 Skills in `.claude/skills/` work against **any** target GitHub repo. They use `{TARGET_OWNER}` and `{TARGET_REPO}` as runtime variables rather than hardcoded project paths.
