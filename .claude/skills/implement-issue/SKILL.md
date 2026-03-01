@@ -3,7 +3,7 @@
 name: implement-issue
 description: Implement a GitHub issue by creating a feature branch, writing code to satisfy the Definition of Done, and creating a PR for review.
 disable-model-invocation: true
-argument-hint: [issue number]
+argument-hint: [issue number] repo=[repo-or-owner/repo]
 ---
 
 # Implement Issue → Code → PR
@@ -15,7 +15,7 @@ Take a GitHub issue from planning to implementation, tracking Definition of Done
 **Step 0 — Identify the issue and repo.**
 Ask: "Which issue number are you implementing?"
 
-If `TARGET_REPO` is not in context, ask: "Which repository? (Press **Enter** for `{TARGET_OWNER}/{TARGET_REPO}`, or type `owner/repo`)"
+Resolve the target repo: if `repo=` was provided at invocation use it (shorthand `repo=agent-skills` → `{TARGET_OWNER}/agent-skills`; `owner/repo` overrides owner). If multiple repos are evident in workspace context and none is clearly indicated, ask: _"Which repo? (default: `{TARGET_OWNER}/{TARGET_REPO}`)"_. Otherwise use `{TARGET_REPO}` silently.
 
 **Step 1 — Choose implementation mode.**
 Ask: "Implementation mode: **Guided** (approve each step) or **Autonomous** (full auto-implementation)?"

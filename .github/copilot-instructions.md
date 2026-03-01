@@ -24,6 +24,17 @@ A single source of truth for org-wide agent skills. Skills work against **any** 
 - **Discover** the project board number at runtime via `gh project list --owner {TARGET_OWNER}`
 - **Discover** the default branch via `gh api repos/{TARGET_OWNER}/{TARGET_REPO} --jq .default_branch`
 
+## Repo Resolution Convention
+
+All skills support an optional `repo=` argument:
+- `repo=agent-skills` — shorthand; owner defaults to `TARGET_OWNER`
+- `repo=some-org/other-repo` — explicit `owner/repo` for cross-org
+
+**Resolution order (Step 0 of every skill):**
+1. `repo=` provided → use it
+2. Multiple repos evident in workspace context and none clearly indicated → ask the user which repo (default: `{TARGET_OWNER}/{TARGET_REPO}`)
+3. Otherwise → use `TARGET_REPO` silently
+
 ## Skill Invocation Rule
 
 When a user explicitly invokes a skill by name (e.g. `/plan-issue`, `/implement-issue`, `/review-pr`), **always follow the workflow defined in that skill's SKILL.md from the beginning** — even if the SKILL.md is also present as a file attachment in context, and even if the underlying task seems directly actionable without following the pipeline. A SKILL.md attached as context is the active workflow to execute, not background documentation to consult. If invocation intent is ambiguous, ask before skipping steps.

@@ -3,7 +3,7 @@
 name: prioritize-open-prs
 description: Query open PRs that have linked issues, compute ROI scores on the linked issues, and return a ranked list of N PRs to review — ordered by business value to guide where to invoke /review-pr next.
 disable-model-invocation: true
-argument-hint: n=[number]
+argument-hint: n=[number] repo=[repo-or-owner/repo]
 ---
 
 # Prioritize Open PRs → Ranked Review Queue
@@ -21,6 +21,10 @@ Find open pull requests with linked issues, score each linked issue by ROI, and 
 ---
 
 ## Workflow
+
+**Step 0 — Resolve target repo.**
+
+If `repo=` was provided at invocation, use it (shorthand `repo=agent-skills` resolves to `{TARGET_OWNER}/agent-skills`; `owner/repo` format overrides owner too). If multiple repos are evident in the workspace context and none is clearly indicated by the request, ask: _"Which repo? (default: `{TARGET_OWNER}/{TARGET_REPO}`)"_. Otherwise use `{TARGET_REPO}` silently.
 
 **Step 1 — Parse the argument.**
 Read `n` from the invocation (e.g. `/prioritize-open-prs n=3`). Default to `n=5` if not provided.

@@ -3,7 +3,7 @@
 name: prioritize-issues
 description: Query the GitHub project board for Todo issues, compute ROI scores, and return a ranked list of N tickets with rationale and /implement-issue next-step commands.
 disable-model-invocation: true
-argument-hint: n=[number]
+argument-hint: n=[number] repo=[repo-or-owner/repo]
 ---
 
 # Prioritize Backlog → Ranked Issue List
@@ -21,6 +21,10 @@ Query open Todo issues from the GitHub project board, score each by ROI, and ret
 ---
 
 ## Workflow
+
+**Step 0 — Resolve target repo.**
+
+If `repo=` was provided at invocation, use it (shorthand `repo=agent-skills` resolves to `{TARGET_OWNER}/agent-skills`; `owner/repo` format overrides owner too). If multiple repos are evident in the workspace context and none is clearly indicated by the request, ask: _"Which repo? (default: `{TARGET_OWNER}/{TARGET_REPO}`)"_. Otherwise use `{TARGET_REPO}` silently.
 
 **Step 1 — Parse the argument.**
 Read `n` from the invocation (e.g. `/prioritize-issues n=3`). Default to `n=5` if not provided.
