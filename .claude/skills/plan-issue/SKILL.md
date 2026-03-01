@@ -22,19 +22,22 @@ If it is ambiguous whether the user wants the pipeline or direct implementation,
 - **One phase at a time**: don't describe Phase 2 until Phase 1 is complete
 - **No prose filler**: skip "Great job!" and "Now that you've..." — just state what's next
 - **Exact commands**: always show the exact slash command and argument to run next
-- **Flag the pipeline position**: always show which phase we're in (Phase 1 / 2 / 3 / 4 / 5)
+- **Flag the pipeline position**: always show which phase we're in (Phase 1 / 1.5 / 2 / 3 / 4 / 5)
 
 ---
 
 ## Pipeline Overview
 
 ```
-Phase 1: /issue-ticket          → GitHub issue with DoD
-Phase 2: /prioritize-issues     → ROI-ranked list of Todo issues
-Phase 3: /implement-issue       → feature branch + code + PR
-Phase 4: /prioritize-open-prs   → ROI-ranked PR review queue
-Phase 5: /review-pr             → code review + GitHub verdict
+Phase 1:   /issue-ticket          → GitHub issue with DoD
+Phase 1.5: (optional) spec-kit pipeline → formal spec artifacts
+Phase 2:   /prioritize-issues     → ROI-ranked list of Todo issues
+Phase 3:   /implement-issue       → feature branch + code + PR
+Phase 4:   /pr-triage scope=team  → ROI-ranked PR review queue
+Phase 5:   /review-pr             → code review + GitHub verdict
 ```
+
+> Phase 1.5 is skipped for simple issues. It is recommended for issues with 5+ DoD items, cross-layer changes (schema + backend + frontend), or explicitly complex technical scope.
 
 ---
 
@@ -57,7 +60,24 @@ Follow the complete workflow from `.claude/skills/issue-ticket/SKILL.md`:
      --label "label1,label2"
    ```
 
-**Phase 1 complete — display handoff:**
+**Phase 1 complete — evaluate complexity and display handoff:**
+
+Count the DoD items and scan the Technical Scope section. If the issue has **5 or more DoD items**, spans multiple architectural layers, or the Technical Scope explicitly calls out design decisions — flag it:
+
+---
+**✅ Phase 1 complete.** Issue #{number} created.
+
+**Complexity check:** This issue has significant scope ([N] DoD items, [layers involved]).
+
+**Recommended: Run the spec-kit pipeline first (Phase 1.5) to produce a formal spec before coding.**
+```
+Run Phase 1.5? (yes to spec first / no to skip straight to Phase 2)
+```
+
+> For simple issues (1–4 DoD items, single layer), skip Phase 1.5 and proceed directly to Phase 2.
+---
+
+If the issue is straightforward, skip Phase 1.5 messaging and show:
 
 ---
 **✅ Phase 1 complete.** Issue #{number} created.
@@ -72,6 +92,49 @@ Use `n=3` (or any number) to see the top N ready issues ranked by ROI.
 
 > Skip Phase 2 if you already know what to implement next.
 ---
+
+---
+
+## Phase 1.5 — Spec-Kit Pipeline (Optional, Complex Issues Only)
+
+If the developer elects to run Phase 1.5, guide through the spec-kit sub-pipeline in order. Each command is a stopping point — the developer runs it in their own agent session.
+
+**Step 1 — Define requirements:**
+```
+/speckit.specify
+```
+Describe what the issue should build. spec-kit will produce a structured requirements + user stories document under `.speckit/` in the repo.
+
+**Step 2 — Clarify ambiguities (recommended):**
+```
+/speckit.clarify
+```
+Identifies underspecified areas before technical planning. Run after `/speckit.specify`.
+
+**Step 3 — Technical implementation plan:**
+```
+/speckit.plan
+```
+Provide the tech stack and architecture constraints. spec-kit produces a technical plan artifact.
+
+**Step 4 — Task breakdown:**
+```
+/speckit.tasks
+```
+Generates an actionable task list from the implementation plan. This is what `implement-issue` will consume.
+
+---
+**✅ Phase 1.5 complete.** Spec artifacts written to `.speckit/`.
+
+**Next: Confirm priority, then implement.**
+
+The spec artifacts will be automatically picked up by `/implement-issue`. Proceed to Phase 2 (or skip straight to Phase 3 if priority is already clear):
+```
+/prioritize-issues
+```
+---
+
+> **Note:** Phase 1.5 requires [github/spec-kit](https://github.com/github/spec-kit) to be installed (`specify init --here --ai copilot` or equivalent). If spec-kit is not installed, skip Phase 1.5.
 
 ---
 
