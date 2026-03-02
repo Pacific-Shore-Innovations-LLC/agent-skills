@@ -103,9 +103,14 @@ When all DoD items are complete:
    make test
    ```
 
-2. Ask: "Ready to create PR?"
+2. **Walk through the pre-PR quality gate** (`.claude/skills/implement-issue/pre-pr-checklist.md`):
+   - Go through each checklist item interactively with the user
+   - Mark each item ✅ pass or ❌ fail
+   - **Block PR creation if any item is ❌** — fix the issue first, or explicitly defer with a linked follow-up issue noted in the PR body
 
-3. If yes:
+3. Ask: "Ready to create PR?"
+
+4. If yes:
    ```bash
    gh pr create \
      --repo {TARGET_OWNER}/{TARGET_REPO} \
@@ -139,6 +144,11 @@ When complete, display:
 - All files created/modified
 - All DoD items checked off
 - Test results summary
+
+**Walk through the pre-PR quality gate** (`.claude/skills/implement-issue/pre-pr-checklist.md`):
+- Go through each checklist item interactively with the user
+- Mark each item ✅ pass or ❌ fail
+- **Block PR creation if any item is ❌** — fix the issue first, or explicitly defer with a linked follow-up issue
 
 Ask: "Ready to create PR?"
 
