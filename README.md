@@ -15,6 +15,7 @@ A single source of truth for org-wide AI agent skills. Skills here work against 
 | `/implement-issue` | GitHub issue → branch + code + PR |
 | `/review-pr` | Code review against project standards + DoD |
 | `/plan-issue` | Guided full pipeline: idea → issue → prioritize → implement → review |
+| `/pr-inbox` | Unified reviewed-PR action queue across workspace repos — ranked by ROI, sorted by verdict |
 
 ## Usage
 
