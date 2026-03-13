@@ -24,6 +24,22 @@ A single source of truth for org-wide agent skills. Skills work against **any** 
 - **Discover** the project board number at runtime via `gh project list --owner {TARGET_OWNER}`
 - **Discover** the default branch via `gh api repos/{TARGET_OWNER}/{TARGET_REPO} --jq .default_branch`
 
+## Skill Invocation Rule
+
+When a user explicitly invokes a skill by name (e.g. `/plan-issue`, `/implement-issue`, `/review-pr`), **always follow the workflow defined in that skill's SKILL.md from the beginning** — even if the SKILL.md is also present as a file attachment in context, and even if the underlying task seems directly actionable without following the pipeline. A SKILL.md attached as context is the active workflow to execute, not background documentation to consult. If invocation intent is ambiguous, ask before skipping steps.
+
+## Contributing — Git Workflow
+
+When making any changes **to this repo** (new skill, rename, doc update), always follow the branching pattern — **never commit directly to `main`**:
+
+1. `git checkout main && git pull origin main`
+2. `git checkout -b issue-{number}-{brief-description}`
+3. Make changes, `git add -A`, `git commit -m "..."`
+4. `git push -u origin issue-{number}-{brief-description}`
+5. `gh pr create --base main ...`
+
+This applies when an agent is executing implementation work that targets this repo, not just when a human developer is contributing.
+
 ## Runtime Variables
 
 These are injected by the container entrypoint (psis) or set in `.envrc` for VS Code usage:
@@ -38,7 +54,8 @@ TARGET_REPO    — Repository name (e.g. utilityiou)
 ```
 .claude/skills/
 ├── issue-ticket/SKILL.md
-├── prioritize/SKILL.md
+├── prioritize-issues/SKILL.md
+├── prioritize-open-prs/SKILL.md
 ├── implement-issue/SKILL.md
 ├── review-pr/SKILL.md
 └── plan-issue/SKILL.md

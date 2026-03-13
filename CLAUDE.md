@@ -21,7 +21,8 @@ All skills depend on two variables being present in the agent's context at invoc
 | Skill | File | Purpose |
 |---|---|---|
 | `issue-ticket` | `.claude/skills/issue-ticket/SKILL.md` | Raw idea → structured GitHub issue |
-| `prioritize` | `.claude/skills/prioritize/SKILL.md` | ROI-ranked backlog |
+| `prioritize-issues` | `.claude/skills/prioritize-issues/SKILL.md` | ROI-ranked Todo backlog |
+| `prioritize-open-prs` | `.claude/skills/prioritize-open-prs/SKILL.md` | ROI-ranked open PR review queue |
 | `implement-issue` | `.claude/skills/implement-issue/SKILL.md` | Issue → branch → code → PR |
 | `review-pr` | `.claude/skills/review-pr/SKILL.md` | PR review against standards + DoD |
 | `plan-issue` | `.claude/skills/plan-issue/SKILL.md` | Full pipeline orchestrator |
@@ -47,6 +48,30 @@ Add this repo alongside your project repo in a `.code-workspace` file to make al
 2. Use `{TARGET_OWNER}` / `{TARGET_REPO}` — never hardcode
 3. Set `disable-model-invocation: true` in frontmatter
 4. PR to this repo
+
+## Contributing — Git Workflow
+
+When making any changes to this repo (new skill, renamed skill, doc updates), always follow this branching pattern — **never commit directly to `main`**:
+
+```bash
+# Start from a current main
+git checkout main && git pull origin main
+
+# Create a feature branch named after the issue
+git checkout -b issue-{number}-{brief-description}
+
+# Make changes, then commit
+git add -A
+git commit -m "feat|fix|docs: short description\n\nCloses #{number}"
+
+# Push and open a PR
+git push -u origin issue-{number}-{brief-description}
+gh pr create --base main --title "..." --body-file /tmp/pr.md
+```
+
+Branch naming: `issue-{number}-{brief-description}` (e.g. `issue-5-prioritize-open-prs-and-rename`)
+
+This applies even when the agent itself is executing implementation work against this repo as the target.
 
 ## What Not to Add Here
 

@@ -33,9 +33,10 @@ alias psis='docker run --rm -it \
 Invoke a skill:
 
 ```bash
-psis --project utilityiou --skill prioritize n=3
+psis --project utilityiou --skill prioritize-issues n=3
+psis --project utilityiou --skill prioritize-open-prs n=5
 psis --project utilityiou --skill issue-ticket
-psis --project utilityiou --skill prioritize n=5 --branch feature/my-branch
+psis --project utilityiou --skill prioritize-issues n=5 --branch feature/my-branch
 ```
 
 ### Option 2 — Multi-root VS Code Workspace (for developers)

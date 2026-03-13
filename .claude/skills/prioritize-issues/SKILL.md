@@ -1,6 +1,6 @@
 ````skill
 ---
-name: prioritize
+name: prioritize-issues
 description: Query the GitHub project board for Todo issues, compute ROI scores, and return a ranked list of N tickets with rationale and /implement-issue next-step commands.
 disable-model-invocation: true
 argument-hint: n=[number]
@@ -23,7 +23,7 @@ Query open Todo issues from the GitHub project board, score each by ROI, and ret
 ## Workflow
 
 **Step 1 — Parse the argument.**
-Read `n` from the invocation (e.g. `/prioritize n=3`). Default to `n=5` if not provided.
+Read `n` from the invocation (e.g. `/prioritize-issues n=3`). Default to `n=5` if not provided.
 
 **Step 2 — Discover project context.**
 
@@ -144,7 +144,7 @@ Rules:
 
 **Input:**
 ```
-/prioritize n=3
+/prioritize-issues n=3
 ```
 
 **Expected output:**
