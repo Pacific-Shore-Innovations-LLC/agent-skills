@@ -47,20 +47,45 @@ Add this repo as a second root alongside your project repo in a `.code-workspace
 ```json
 {
   "folders": [
-    { "path": "../your-project" },
-    { "path": "../agent-skills" }
+    { "path": "../agent-skills" },
+    { "path": "../your-project" }
   ]
 }
 ```
 
-Skills in `.claude/skills/` are auto-discovered by GitHub Copilot and Claude Code.
+> **Important**: list `agent-skills` first so its skills take precedence over any repo-specific ones.
 
-Set your target in `.envrc` at the workspace or project level:
+Skills in `.claude/skills/` are auto-discovered by GitHub Copilot and Claude Code once the workspace is open.
+
+#### Setting `TARGET_OWNER` and `TARGET_REPO`
+
+**Option A — `.envrc` (recommended for Claude Code)**
+
+Your project repo should have a `.envrc` file at its root:
 
 ```bash
 export TARGET_OWNER=Pacific-Shore-Innovations-LLC
 export TARGET_REPO=utilityiou
 ```
+
+This requires [**direnv**](https://direnv.net/) to be installed. After creating or editing the file, run:
+
+```bash
+direnv allow
+```
+
+Claude Code reads shell environment variables, so once `direnv` is active these values are automatically available to skills.
+
+**Option B — GitHub Copilot (workspace file context)**
+
+GitHub Copilot Chat does not read shell env vars directly. Instead, skills resolve the target repo by inspecting your workspace's git remotes at runtime — no manual env var setup needed:
+
+```bash
+# Run automatically by pr-triage and other skills inside each workspace folder:
+gh repo view --json nameWithOwner --jq .nameWithOwner
+```
+
+Skills fall back to `{TARGET_OWNER}/{TARGET_REPO}` only when a single repo can't be detected — so for typical multi-root workspaces, Copilot Chat users can skip the `.envrc` step entirely.
 
 ## How Skills Are Parameterized
 
