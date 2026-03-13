@@ -92,8 +92,8 @@ Select the project whose title most closely matches `{TARGET_REPO}`. If no match
 ```
 TOP [N] {NOUN} — {TARGET_REPO}
 
-#1. {Item Title} (#{id})
-    [Secondary identifier if applicable]
+#1. {Primary identifier}: {Title}
+    [{Secondary identifier if applicable}]
     ROI: {score} | Value: {V}  Risk: {R}  Deps: {D}
     Why: {one sentence — no elaboration}
 
@@ -106,6 +106,10 @@ NEXT STEPS:
 ❌ Defer: {Title} (#{id}) — {one-phrase reason}
 ─────────────────────────────────────
 ```
+
+**Primary identifier format by item type:**
+- Issues: `#1. {Title} (#{issue-number})`
+- PRs: `#1. PR #{pr-number}: {Title}` with `Linked Issue: #{issue-number}` as secondary identifier on the next line
 
 Rules:
 - NEXT STEPS block is **always the final section**, never omitted
@@ -138,9 +142,8 @@ Phase / step transitions follow this pattern:
 **Next:** {Directive statement — what to do now.}
 
 Run:
-```
-/skill-name [argument]
-```
+
+    /skill-name [argument]
 
 > {Optional: one-sentence note about mode or skip condition.}
 ---
@@ -214,17 +217,19 @@ This section documents what is reliable across tools and what varies. Skill auth
 
 ### A. What Is Reliable Across All Three (GHCP, Claude Code, psis)
 
-- Skill discovery from `.claude/skills/{name}/SKILL.md`
 - `disable-model-invocation: true` frontmatter is honored
 - `name` frontmatter value is used as the slash command identifier
 - `argument-hint` is displayed in the skill picker UI
 - `gh` CLI commands execute in the workspace terminal (or psis container shell)
 - Markdown headings (`##`) reliably delineate sections the agent uses to navigate
 
+Note: **Skill discovery mechanism differs by tool** — see per-tool sections below.
+
 ### B. GitHub Copilot (GHCP) — Specific Behavior
 
 - **Auto-loads**: `.github/copilot-instructions.md` as system context
 - **Does NOT auto-load**: `CLAUDE.md` or `.speckit/constitution-core.md`
+- **Skill discovery**: GHCP does not natively discover `.claude/skills/` as slash commands. Skills are available via context loading — either through workspace file attachment or because `copilot-instructions.md` references the skill directory. Skills are not native GHCP slash commands unless explicitly surfaced via the VS Code multi-root workspace arrangement.
 - **Context loading**: workspace files are loaded on demand or via attachment; the agent may not have the full file tree in context by default
 - **Multi-step skill state**: Copilot may not maintain step-by-step state as reliably as Claude Code across a long workflow — skill workflows should be designed so each step can be re-entered if context is lost
 
