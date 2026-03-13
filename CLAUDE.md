@@ -25,6 +25,7 @@ All skills depend on two variables being present in the agent's context at invoc
 | `implement-issue` | `.claude/skills/implement-issue/SKILL.md` | Issue → branch → code → PR |
 | `review-pr` | `.claude/skills/review-pr/SKILL.md` | PR review against standards + DoD |
 | `plan-issue` | `.claude/skills/plan-issue/SKILL.md` | Full pipeline orchestrator |
+| `pr-triage` | `.claude/skills/pr-triage/SKILL.md` | ROI-ranked PR action queue (scope=mine/team/rework) |
 
 ## Container Invocation (psis)
 

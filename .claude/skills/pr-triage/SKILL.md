@@ -1,3 +1,4 @@
+```skill
 ---
 name: pr-triage
 description: Unified ROI-ranked PR action queue across all workspace repos. Shows your own PRs with all review states (scope=mine, default), all open PRs awaiting first review (scope=team), or PRs with changes-requested awaiting rework (scope=rework). Tells you exactly what to do next — merge, address feedback, assign a reviewer, or implement rework. Also emits structured MCP output with suggested_next_tool for autonomous pipeline agents.
@@ -294,3 +295,4 @@ NEXT STEPS:
 - **MCP `suggested_next_tool`** for `approved` is always `null` — autonomous agents must not merge without a hard-gate human confirmation step
 - **Always** include a NEXT STEPS block even if all PRs are deferred
 - **Always** show the full `gh pr merge` command — never abbreviate it
+```
