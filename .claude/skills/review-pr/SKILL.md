@@ -55,7 +55,12 @@ Check for the project's standards document (in order of preference):
 Also check for spec documents relevant to the changed files (e.g. `docs/development/`, `docs/api/`, schema files).
 
 **Step 4 — Perform the review.**
-Analyze the PR diff against all review dimensions:
+Load `.claude/skills/review-pr/review-checklist.md` and walk through each item interactively:
+- Assess each item against the PR diff: ✅ pass, ❌ fail, or ⚠️ concern
+- Record specific file + line references for any ❌ / ⚠️ findings
+- **Do not proceed to Step 5 until all checklist categories are assessed**
+
+Checklist categories to cover:
 
 ### 1. Standards Compliance
 If a constitution or standards document was found, verify the PR follows it. Common universal checks:
