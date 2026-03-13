@@ -1,3 +1,4 @@
+````skill
 ---
 name: prioritize-open-prs
 description: Query open PRs that have linked issues, compute ROI scores on the linked issues, and return a ranked list of N PRs to review — ordered by business value to guide where to invoke /review-pr next.
@@ -177,3 +178,4 @@ NEXT STEPS:
 ✅ /review-pr → 58
 ─────────────────────────────────────
 ```
+````

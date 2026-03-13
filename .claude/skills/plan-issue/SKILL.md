@@ -91,7 +91,6 @@ Run:
 Then enter the issue number when asked (e.g. `15`).
 
 > The skill will ask for **Guided** or **Autonomous** mode — Guided is recommended.
----
 
 ---
 
