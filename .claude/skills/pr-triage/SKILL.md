@@ -159,7 +159,18 @@ Round to one decimal place. Higher is better.
 
 Sort all PRs across all repos by ROI descending within each section.
 
-**scope=mine**: split into three sections — Approved, Changes Requested, Commented — each sorted by ROI within the section. Show up to `n` entries per section.
+### Verdict determination (scope=mine)
+
+Use `reviewDecision` as the primary signal — not `reviews[-1].state`. GitHub resets `reviewDecision` to `""` when new commits are pushed after a review, correctly reflecting that the previous decision no longer applies. `reviews[-1].state` is the raw last event and does **not** update when the author pushes fixes.
+
+| `reviewDecision` | `reviews` array | Verdict |
+|---|---|---|
+| `"APPROVED"` | any | ✅ Approved |
+| `"CHANGES_REQUESTED"` | any | 🔄 Changes Requested (author must act) |
+| `""` (empty) | non-empty | 💬 Awaiting Re-review (author responded; reviewer's turn) |
+| `""` (empty) | empty | Exclude — no review activity yet |
+
+**scope=mine**: split into three sections — Approved, Changes Requested, Awaiting Re-review — each sorted by ROI within the section. Show up to `n` entries per section.
 
 **scope=team**: single unified list (all awaiting first review). Show top `n`.
 
@@ -223,13 +234,13 @@ PR TRIAGE — [REPOS] — scope: mine
     Feedback: {one-sentence summary of what was asked for}
     NEXT ACTION: Address "{specific feedback}" → push commits → re-run /review-pr {pr}
 
-── 💬 COMMENTED ──────────────────────────────────
+── 💬 AWAITING RE-REVIEW ─────────────────────────
 
 #1. [{OWNER}/{REPO}] PR #{pr}: {title}
     Author: @{author} | ROI: {score} | Value: {V}  Risk: {R}  Deps: {D}
-    Review: 💬 Comment from {reviewer}
-    Thread: {one-sentence summary of open question}
-    NEXT ACTION: Resolve "{open question}" → reply or push → re-run /review-pr {pr}
+    Review: 💬 Fixes pushed since last review — awaiting @{reviewer} re-review
+    Thread: {one-sentence summary of what was addressed}
+    NEXT ACTION: Await re-review → no action required
 
 ─────────────────────────────────────
 NEXT STEPS:
