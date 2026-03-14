@@ -15,6 +15,7 @@ A single source of truth for org-wide agent skills. Skills work against **any** 
 | `/implement-issue` | GitHub issue → feature branch + code + PR |
 | `/review-pr` | Code review against project standards + DoD |
 | `/plan-issue` | Full pipeline: idea → issue → prioritize → implement → review |
+| `/pr-triage` | Unified ROI-ranked PR action queue (scope=mine/team/rework) |
 
 ## Key Rules for Skill Authoring
 
@@ -55,9 +56,9 @@ TARGET_REPO    — Repository name (e.g. utilityiou)
 .claude/skills/
 ├── issue-ticket/SKILL.md
 ├── prioritize-issues/SKILL.md
-├── prioritize-open-prs/SKILL.md
 ├── implement-issue/SKILL.md
 ├── review-pr/SKILL.md
+├── pr-triage/SKILL.md
 └── plan-issue/SKILL.md
 ```
 
