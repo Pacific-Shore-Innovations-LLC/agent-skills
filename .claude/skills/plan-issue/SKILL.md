@@ -32,7 +32,7 @@ If it is ambiguous whether the user wants the pipeline or direct implementation,
 Phase 1: /issue-ticket          → GitHub issue with DoD
 Phase 2: /prioritize-issues     → ROI-ranked list of Todo issues
 Phase 3: /implement-issue       → feature branch + code + PR
-Phase 4: /prioritize-open-prs   → ROI-ranked PR review queue
+Phase 4: /pr-triage scope=team  → ROI-ranked PR review queue
 Phase 5: /review-pr             → code review + GitHub verdict
 ```
 
@@ -105,18 +105,18 @@ After `/implement-issue` has been run and a PR has been created:
 
 Run:
 ```
-/prioritize-open-prs
+/pr-triage scope=team
 ```
-Use `n=3` (or any number) to see the top N open PRs ranked by ROI of their linked issues.
+Use `n=3` (or any number) to see the top N open PRs awaiting first review, ranked by ROI.
 
 > Skip Phase 4 if you already know which PR to review next.
 ---
 
 ---
 
-## Phase 4 — Prioritize Open PRs → Pick the Next PR to Review
+## Phase 4 — PR Triage → Pick the Next PR to Review
 
-If the developer runs `/prioritize-open-prs` and wants guidance on what to review next:
+If the developer runs `/pr-triage scope=team` and wants guidance on what to review next:
 
 ---
 **✅ Phase 4 complete.** Open PRs ranked by review priority.

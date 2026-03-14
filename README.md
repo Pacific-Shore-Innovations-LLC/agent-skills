@@ -35,7 +35,7 @@ Invoke a skill:
 
 ```bash
 psis --project utilityiou --skill prioritize-issues n=3
-psis --project utilityiou --skill prioritize-open-prs n=5
+psis --project utilityiou --skill pr-triage scope=team n=5
 psis --project utilityiou --skill issue-ticket
 psis --project utilityiou --skill prioritize-issues n=5 --branch feature/my-branch
 ```
