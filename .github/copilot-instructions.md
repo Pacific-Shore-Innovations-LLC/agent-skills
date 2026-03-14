@@ -2,6 +2,12 @@
 
 This repo contains generalized AI agent skill definitions for use with GitHub Copilot, Claude Code, and the `psis` CLI container.
 
+## ⚠️ CONSTITUTIONAL AUTHORITY
+
+**Before authoring or modifying any skill**, consult [`.speckit/constitution-core.md`](.speckit/constitution-core.md). It is the supreme authority for all skill structure rules, output format conventions, runtime variable usage, communication style, cross-tool compatibility, git workflow, and guardrails patterns.
+
+When any rule here contradicts the constitution, the constitution wins.
+
 ## What This Repo Is
 
 A single source of truth for org-wide agent skills. Skills work against **any** target GitHub repo using runtime variables (`TARGET_OWNER`, `TARGET_REPO`) rather than hardcoded paths.
