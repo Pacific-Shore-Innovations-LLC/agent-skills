@@ -3,7 +3,7 @@
 name: issue-ticket
 description: Create a new GitHub issue from an unstructured idea, or edit an existing issue to reflect requirement changes.
 disable-model-invocation: true
-argument-hint: [optional brief idea summary]
+argument-hint: [optional brief idea summary] repo=[repo-or-owner/repo]
 ---
 
 # Issue Ticket → GitHub Issue
@@ -23,6 +23,11 @@ Set `RESOLVED_OWNER` and `RESOLVED_REPO` for all subsequent steps.
 
 ## Step 1 — Determine Mode
 
+**Step 0 — Resolve target repo.**
+
+If `repo=` was provided at invocation, use it (shorthand `repo=agent-skills` → `{TARGET_OWNER}/agent-skills`; `owner/repo` overrides owner). If multiple repos are evident in workspace context and none is clearly indicated, ask: _"Which repo should this issue be created in? (default: `{TARGET_OWNER}/{TARGET_REPO}`)"_. Otherwise use `{TARGET_REPO}` silently.
+
+**Step 1 — Determine mode.**
 Ask: "Are you creating a **new** issue or **editing** an existing one?"
 
 ---

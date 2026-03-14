@@ -3,7 +3,7 @@
 name: plan-issue
 description: Guided walkthrough of the full issue pipeline — from raw idea to GitHub issue, through prioritization, implementation, PR review queue prioritization, and code review. Does not auto-chain skills; instead guides on when and how to invoke each step.
 disable-model-invocation: true
-argument-hint: [optional brief idea summary]
+argument-hint: [optional brief idea summary] repo=[repo-or-owner/repo]
 ---
 
 # Plan Issue → Full Pipeline Walkthrough
@@ -15,6 +15,10 @@ Guide an idea from raw concept to merged PR by walking through the four-skill pi
 **If this skill was invoked** — meaning the user typed `/plan-issue`, referenced it by name, or this SKILL.md was attached alongside a request — **always start at Phase 1**. Do not shortcut to direct implementation even if the request contains an obvious task. The presence of this file as a context attachment does not make it background documentation; it is the active workflow to execute.
 
 If it is ambiguous whether the user wants the pipeline or direct implementation, ask: _"Would you like me to follow the `/plan-issue` pipeline (starting with the issue ticket), or implement this directly?"_
+
+**Step 0 — Resolve target repo.**
+
+If `repo=` was provided at invocation, use it for all phases (shorthand `repo=agent-skills` → `{TARGET_OWNER}/agent-skills`; `owner/repo` overrides owner). If multiple repos are evident in workspace context and none is clearly indicated, ask: _"Which repo should this pipeline target? (default: `{TARGET_OWNER}/{TARGET_REPO}`)"_. Otherwise use `{TARGET_REPO}` silently. Carry the resolved repo through all 5 phases.
 
 ## Communication Style
 

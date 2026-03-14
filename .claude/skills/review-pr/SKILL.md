@@ -3,7 +3,7 @@
 name: review-pr
 description: Review a GitHub pull request for standards compliance, code quality, security, test coverage, and Definition of Done completeness. Posts review to GitHub.
 disable-model-invocation: true
-argument-hint: [PR number]
+argument-hint: [PR number] repo=[repo-or-owner/repo]
 ---
 
 # Review Pull Request
@@ -15,8 +15,7 @@ Perform a thorough code review against the project's standards, and linked issue
 **Step 0 — Identify the PR and repo.**
 Ask: "Which PR number would you like me to review?"
 
-If `TARGET_REPO` is not in context, ask:
-"Which repository? (Press **Enter** for `{TARGET_OWNER}/{TARGET_REPO}`, or type `owner/repo`)"
+Resolve the target repo: if `repo=` was provided at invocation use it (shorthand `repo=agent-skills` → `{TARGET_OWNER}/agent-skills`; `owner/repo` overrides owner). If multiple repos are evident in workspace context and none is clearly indicated, ask: _"Which repo? (default: `{TARGET_OWNER}/{TARGET_REPO}`)"_. Otherwise use `{TARGET_REPO}` silently.
 
 ---
 

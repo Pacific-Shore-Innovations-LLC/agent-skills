@@ -49,6 +49,20 @@ The `docker/entrypoint.sh` script:
 
 Add this repo alongside your project repo in a `.code-workspace` file to make all skills available via slash commands. See `README.md` for setup.
 
+## Repo Resolution Convention
+
+All skills support an optional `repo=` argument at invocation time:
+
+- `repo=agent-skills` — shorthand; owner resolves to `TARGET_OWNER`
+- `repo=some-org/other-repo` — explicit `owner/repo` for cross-org targets
+
+**Resolution order (applied as Step 0 in every skill):**
+1. If `repo=` was provided at invocation → use it
+2. If workspace context contains multiple repos and none is clearly indicated by the request → ask: _"Which repo? (default: `{TARGET_OWNER}/{TARGET_REPO}`)"_
+3. Otherwise → use `TARGET_REPO` silently, no question asked
+
+Every skill's frontmatter `argument-hint` must include `repo=[repo]` as an optional argument.
+
 ## Adding Skills
 
 1. Create `.claude/skills/{name}/SKILL.md`
