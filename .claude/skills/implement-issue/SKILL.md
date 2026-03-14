@@ -51,8 +51,21 @@ Display:
 - Definition of Done checklist
 - Identified DoD categories (schema, backend, frontend, testing, docs)
 
+**Spec artifact check:**
+After creating the branch, check whether spec-kit artifacts exist for this issue:
+```bash
+# Feature dir name typically matches the branch name
+FEATURE_DIR=".speckit/issue-{number}-{brief-description}"
+if [ -d "$FEATURE_DIR" ]; then
+  echo "Spec artifacts found: $FEATURE_DIR"
+  ls "$FEATURE_DIR"
+fi
+```
+- If artifacts are found: display the spec summary and derive the implementation plan from `.speckit/{feature-dir}/` rather than from the issue body alone. Highlight where spec content expands on what the issue DoD says.
+- If no artifacts: proceed as normal — no change in behavior, no message to the user.
+
 **Step 3 — Propose implementation plan.**
-Show the order in which DoD items will be tackled. Typical order:
+Show the order in which DoD items will be tackled (incorporating spec artifacts if present). Typical order:
 1. Data model / schema changes + migrations
 2. Backend models and API layer
 3. Business logic / service layer
@@ -124,7 +137,7 @@ When all DoD items are complete:
 ## Workflow: Autonomous Mode
 
 **Step 2 — Fetch issue and create branch.**
-Same as Guided Mode.
+Same as Guided Mode, including the spec artifact check.
 
 **Step 3 — Show implementation plan.**
 Display the full implementation plan with all DoD categories and file changes.
