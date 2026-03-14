@@ -346,3 +346,17 @@ Skills that post reviews (currently: `review-pr`):
 ### E. Proposing New Guardrails
 
 If a skill should have a constraint not covered above, add it to the skill's Guardrails section and open a follow-up issue to add it to this document. Ad-hoc guardrails in one skill that should apply broadly are a signal that the constitution needs updating.
+
+### F. Verify Before Asserting Resource Absence (ALL skills)
+
+**Never assert that a GitHub resource (PR, issue, branch, commit) does not exist — or that another agent's output referencing it is a hallucination — without first querying the API to confirm:**
+
+```bash
+gh pr view {number} --repo {OWNER}/{REPO}
+gh issue view {number} --repo {OWNER}/{REPO}
+```
+
+An agent's session context is a snapshot, not the live repo state. Work done in parallel sessions, by other agents, or by human contributors is invisible to the current session. Confident absence assertions based solely on session memory are a trust-eroding error pattern.
+
+**If the CLI returns a result**: the resource is real — acknowledge it and incorporate the new information.
+**If the CLI returns a 404**: only then is it safe to say the resource does not exist.
